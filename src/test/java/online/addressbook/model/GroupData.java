@@ -1,4 +1,4 @@
-package online.addressbook.entities;
+package online.addressbook.model;
 
 import java.util.Objects;
 
