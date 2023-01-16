@@ -11,13 +11,13 @@ public class HelperBase {
         this.driver = driver;
     }
 
-    protected void click(By group_page) {
-        driver.findElement(group_page).click();
+    protected void click(By by) {
+        driver.findElement(by).click();
     }
 
-    protected void type(String group_name, String groupData) {
-        click(By.name(group_name));
-        driver.findElement(By.name(group_name)).sendKeys(groupData);
+    protected void type(String locatorByName, String text) {
+        click(By.name(locatorByName));
+        driver.findElement(By.name(locatorByName)).sendKeys(text);
     }
 
     public boolean isAlertPresent() {

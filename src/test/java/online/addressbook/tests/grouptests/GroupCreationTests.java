@@ -1,7 +1,8 @@
-package online.addressbook.tests;
+package online.addressbook.tests.grouptests;
 
 import lombok.extern.java.Log;
 import online.addressbook.model.GroupData;
+import online.addressbook.tests.TestBase;
 import org.testng.annotations.Test;
 
 @Log
