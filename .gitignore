@@ -35,4 +35,7 @@ build/
 .vscode/
 
 ### Mac OS ###
+**/sonarlint/
 .DS_Store
+.idea
+
