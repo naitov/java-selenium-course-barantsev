@@ -1,10 +1,9 @@
 package online.addressbook.appmanager;
 
 import lombok.Getter;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -17,18 +16,25 @@ public class HelperBase {
         this.driver = driver;
     }
 
-    protected void click(By by) {
-        new WebDriverWait(driver, getTimeout(Timeouts.TWO_SEC)).until(ExpectedConditions.elementToBeClickable(by)).click();
-    }
-
     private static Duration getTimeout(Timeouts amount) {
         return Duration.of(amount.getValue(), ChronoUnit.SECONDS);
     }
 
-    protected void type(String locatorByName, String text) {
+    protected void click(By by) {
+        getWebElementWithClickableWait(by, getTimeout(Timeouts.FIVE_SEC)).click();
+    }
+
+    protected WebElement getWebElementWithClickableWait(By by, Duration timeout) {
+        return new WebDriverWait(driver, timeout).until(ExpectedConditions.elementToBeClickable(by));
+    }
+
+    protected void type(By locator, String text) {
         if (text != null) {
-            click(By.name(locatorByName));
-            driver.findElement(By.name(locatorByName)).sendKeys(text);
+            String existingText = getWebElementWithClickableWait(locator, getTimeout(Timeouts.TWO_SEC)).getAttribute("value");
+            if (!existingText.equals(text)) {
+                click(locator);
+                driver.findElement(locator).sendKeys(text);
+            }
         }
     }
 
@@ -41,10 +47,26 @@ public class HelperBase {
         }
     }
 
+    protected boolean isElementPresent(By locator) {
+        try {
+            driver.findElement(locator);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    protected void selectElementByVisibleText(By listLocator, String text) {
+        getWebElementWithClickableWait(listLocator, getTimeout(Timeouts.FIVE_SEC));
+        new Select(driver.findElement(listLocator)).selectByVisibleText(text);
+    }
+
     private enum Timeouts {
-        TWO_SEC (2),
-        FIVE_SEC (5);
-        @Getter private final int value;
+        TWO_SEC(2),
+        FIVE_SEC(5);
+        @Getter
+        private final int value;
+
         Timeouts(int timeout) {
             this.value = timeout;
         }

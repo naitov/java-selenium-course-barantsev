@@ -9,7 +9,7 @@ import org.testng.annotations.BeforeMethod;
 @Log
 public class TestBase {
 
-    protected final ApplicationManager app = new ApplicationManager("safari");
+    protected final ApplicationManager app = new ApplicationManager("chrome");
 
     @BeforeClass
     public void setUpBrowser() {

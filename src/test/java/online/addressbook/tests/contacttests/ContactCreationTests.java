@@ -9,12 +9,12 @@ import org.testng.annotations.Test;
 public class ContactCreationTests extends TestBase {
 
     @Test
-    public void contactCreation() {
+    public void testContactCreation() {
         app.getNavigationHelper().gotoContactPage();
-        ContactData contactData = new ContactData("test1", "test2", "test3", "11111111");
-        app.getContactHelper().fillContactForm(contactData);
+        ContactData contactData = new ContactData("test1","test2","test33");
+        app.getContactHelper().fillContactForm(contactData, true);
         app.getContactHelper().submitCreation();
-        log.info("Created new contact: " + contactData.address());
+        log.info("Created new contact: " + contactData.firstName());
     }
 
 }

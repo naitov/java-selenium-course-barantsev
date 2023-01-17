@@ -10,10 +10,15 @@ public class NavigationHelper extends HelperBase {
     }
 
     public void gotoGroupPage() {
+
         click(By.xpath("//*[@id='nav']/ul/li[3]/a"));
     }
 
     public void gotoContactPage() {
         click(By.xpath("//*[@id='nav']/ul/li[2]/a"));
+    }
+
+    public void goToMainPage() {
+        click(By.xpath("//*[@id='nav']/ul/li[1]/a"));
     }
 }

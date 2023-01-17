@@ -34,9 +34,8 @@ public class ApplicationManager {
             case "safari" -> driver = new SafariDriver();
             default -> throw new IllegalArgumentException("Wrong browser");
         }
-        driver.manage().timeouts().implicitlyWait(Duration.of(10, ChronoUnit.SECONDS));
+        driver.manage().timeouts().implicitlyWait(Duration.of(0, ChronoUnit.SECONDS));
         driver.get("https://addressbook2077.000webhostapp.com/");
-        driver.manage().window().setSize(new Dimension(1366, 768));
         groupHelper = new GroupHelper(driver);
         navigationHelper = new NavigationHelper(driver);
         sessionHelper = new SessionHelper(driver);
