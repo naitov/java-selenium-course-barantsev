@@ -3,6 +3,7 @@ package online.addressbook.tests.grouptests;
 import lombok.extern.java.Log;
 import online.addressbook.model.GroupData;
 import online.addressbook.tests.TestBase;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Log
@@ -11,8 +12,9 @@ public class GroupModificationTests extends TestBase {
     @Test
     public void testGroupModification() {
         app.getNavigationHelper().gotoGroupPage();
+        int before = app.getGroupHelper().getGroupCount();
         if (!app.getGroupHelper().isThereAGroup()) {
-            app.getGroupHelper().createGroup(new GroupData("test_gr_creation", null, null));
+            app.getGroupHelper().createGroup(new GroupData("test_gr_modification", null, null));
         }
         app.getGroupHelper().selectFirstGroup();
         app.getGroupHelper().initGroupModification();
@@ -20,5 +22,7 @@ public class GroupModificationTests extends TestBase {
         app.getGroupHelper().submitGroupModification();
         app.getGroupHelper().returnToGroupPage();
         log.info("Modified first group in list");
+        int after = app.getGroupHelper().getGroupCount();
+        Assert.assertEquals(after, before);
     }
 }
