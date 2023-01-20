@@ -4,6 +4,10 @@ import lombok.extern.java.Log;
 import online.addressbook.model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Log
 public class GroupHelper extends HelperBase {
@@ -35,8 +39,8 @@ public class GroupHelper extends HelperBase {
         click(By.name("delete"));
     }
 
-    public void selectFirstGroup() {
-        click(By.name("selected[]"));
+    public void selectGroup(int index) {
+        driver.findElements(By.name("selected[]")).get(index).click();
     }
 
     public void initGroupModification() {
@@ -60,5 +64,15 @@ public class GroupHelper extends HelperBase {
 
     public int getGroupCount() {
         return driver.findElements(By.name("selected[]")).size();
+    }
+
+    public List<GroupData> getGroupList() {
+        List<GroupData> groupList = new ArrayList<>();
+        List<WebElement> elements = driver.findElements(By.xpath("//input[@type='checkbox']"));
+        for (WebElement element : elements) {
+            GroupData gData = new GroupData(element.getText(), null, null);
+            groupList.add(gData);
+        }
+        return groupList;
     }
 }
