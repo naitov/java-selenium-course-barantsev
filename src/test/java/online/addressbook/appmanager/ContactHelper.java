@@ -56,16 +56,24 @@ public class ContactHelper extends HelperBase {
         click(By.name("update"));
     }
 
-    public void createContact(ContactData data) {
-        fillContactForm(data, true);
+    public void create(ContactData contactData) {
+        fillContactForm(contactData, true);
         submitCreation();
     }
 
-    public boolean isThereAContact() {
-        return isElementPresent(By.name("selected[]"));
+    public void delete(int index) {
+        selectContact(index);
+        deleteSelectedContact();
+        closeAlertWindow();
     }
 
-    public List<ContactData> getContactList() {
+    public void modify(ContactData contact, int index) {
+        initContactModification(index);
+        fillContactForm(contact, false);
+        submitModification();
+    }
+
+    public List<ContactData> list() {
         List<ContactData> contacts = new ArrayList<>();
         List<WebElement> elements = new WebDriverWait(driver, getTimeout(Timeouts.FIVE_SEC))
                 .until(ExpectedConditions.presenceOfAllElementsLocatedBy(

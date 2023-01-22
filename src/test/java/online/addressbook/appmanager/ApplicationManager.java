@@ -13,17 +13,26 @@ import java.time.temporal.ChronoUnit;
 public class ApplicationManager {
     private final String browser;
     private WebDriver driver;
-    @Getter
     private NavigationHelper navigationHelper;
     @Getter
-    private GroupHelper groupHelper;
-    @Getter
     private SessionHelper sessionHelper;
-    @Getter
+    private GroupHelper groupHelper;
     private ContactHelper contactHelper;
 
     public ApplicationManager(String browser) {
         this.browser = browser;
+    }
+
+    public GroupHelper group() {
+        return groupHelper;
+    }
+
+    public ContactHelper contact() {
+        return contactHelper;
+    }
+
+    public NavigationHelper goTo() {
+        return navigationHelper;
     }
 
     public void init() {
