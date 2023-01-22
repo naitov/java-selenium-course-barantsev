@@ -33,6 +33,7 @@ public class HelperBase {
             String existingText = getWebElementWithClickableWait(locator, getTimeout(Timeouts.TWO_SEC)).getAttribute("value");
             if (!existingText.equals(text)) {
                 click(locator);
+                driver.findElement(locator).clear();
                 driver.findElement(locator).sendKeys(text);
             }
         }

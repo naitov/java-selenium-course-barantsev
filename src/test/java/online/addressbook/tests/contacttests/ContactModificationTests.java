@@ -6,6 +6,7 @@ import online.addressbook.tests.TestBase;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Log
@@ -20,10 +21,18 @@ public class ContactModificationTests extends TestBase {
         }
         List<ContactData> before = app.getContactHelper().getContactList();
         app.getContactHelper().initContactModification(before.size() - 1);
-        app.getContactHelper().fillContactForm(new ContactData("test1_m", "test2_m", null), false);
+        ContactData contact = new ContactData("test1_m", "test2_m", null);
+        app.getContactHelper().fillContactForm(contact, false);
         app.getContactHelper().submitModification();
         List<ContactData> after = app.getContactHelper().getContactList();
         Assert.assertEquals(after.size(), before.size());
         log.info("Contact has been modified");
+
+        before.remove(before.size() - 1);
+        before.add(contact);
+        before.sort(Comparator.comparing(ContactData::getLastName));
+        after.sort(Comparator.comparing(ContactData::getLastName));
+        Assert.assertEquals(after, before);
+        log.info("Lists of contacts before and after modification except modified contact are equal");
     }
 }

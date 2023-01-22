@@ -27,7 +27,7 @@ public class ContactCreationTests extends TestBase {
 
         before.add(contactData);
         before.sort(Comparator.comparing(ContactData::getLastName));
-        before.sort(Comparator.comparing(ContactData::getLastName));
+        after.sort(Comparator.comparing(ContactData::getLastName));
         Assert.assertEquals(after, before);
     }
 }
