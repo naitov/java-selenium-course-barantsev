@@ -1,10 +1,18 @@
 package online.addressbook.appmanager;
 
+import lombok.extern.java.Log;
 import online.addressbook.model.ContactData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Log
 public class ContactHelper extends HelperBase {
 
     public ContactHelper(WebDriver driver) {
@@ -19,17 +27,17 @@ public class ContactHelper extends HelperBase {
         if (creation) {
             click(By.cssSelector("#content > form > input[type=\"submit\"]:nth-child(1)"));
         }
-        type(By.name("firstname"), contactData.firstName());
-        type(By.name("lastname"), contactData.lastName());
+        type(By.name("firstname"), contactData.getFirstName());
+        type(By.name("lastname"), contactData.getLastName());
         if (creation) {
-            selectElementByVisibleText(By.name("new_group"), contactData.group());
+            selectElementByVisibleText(By.name("new_group"), contactData.getGroup());
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
     }
 
-    public void selectFirstContact() {
-        click(By.xpath("//*[@name='selected[]']"));
+    public void selectContact(int index) {
+        driver.findElements(By.name("selected[]")).get(index).click();
     }
 
     public void deleteSelectedContact() {
@@ -40,8 +48,8 @@ public class ContactHelper extends HelperBase {
         driver.switchTo().alert().accept();
     }
 
-    public void initContactModification() {
-        click(By.xpath("//*[@id='maintable']/tbody/tr[2]/td[8]/a"));
+    public void initContactModification(int index) {
+        click(By.xpath(String.format("//*[@id='maintable']/tbody/tr[%s]/td[8]/a", index + 2)));
     }
 
     public void submitModification() {
@@ -55,5 +63,19 @@ public class ContactHelper extends HelperBase {
 
     public boolean isThereAContact() {
         return isElementPresent(By.name("selected[]"));
+    }
+
+    public List<ContactData> getContactList() {
+        List<ContactData> contacts = new ArrayList<>();
+        List<WebElement> elements = new WebDriverWait(driver, getTimeout(Timeouts.FIVE_SEC))
+                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+                        By.xpath("//*[@id='maintable']/tbody/*/td[3]")));
+        for (WebElement e : elements) {
+            String surnameName = e.getText();
+            String surname = surnameName.substring(0, surnameName.indexOf(" "));
+            String name = surnameName.substring(surnameName.indexOf(" ") + 1);
+            contacts.add(new ContactData(name, surname, "test33"));
+        }
+        return contacts;
     }
 }

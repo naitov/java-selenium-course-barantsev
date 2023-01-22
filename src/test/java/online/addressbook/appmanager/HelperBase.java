@@ -16,7 +16,7 @@ public class HelperBase {
         this.driver = driver;
     }
 
-    private static Duration getTimeout(Timeouts amount) {
+    protected static Duration getTimeout(Timeouts amount) {
         return Duration.of(amount.getValue(), ChronoUnit.SECONDS);
     }
 
@@ -61,7 +61,7 @@ public class HelperBase {
         new Select(driver.findElement(listLocator)).selectByVisibleText(text);
     }
 
-    private enum Timeouts {
+    protected enum Timeouts {
         TWO_SEC(2),
         FIVE_SEC(5);
         @Getter
