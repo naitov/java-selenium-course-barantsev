@@ -6,6 +6,8 @@ import online.addressbook.tests.TestBase;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 @Log
@@ -20,8 +22,14 @@ public class GroupCreationTests extends TestBase {
         app.getGroupHelper().fillGroupForm(groupData);
         app.getGroupHelper().submitCreation();
         app.getGroupHelper().returnToGroupPage();
-        log.info("Created new Group with name " + groupData.name());
         List<GroupData> after = app.getGroupHelper().getGroupList();
         Assert.assertEquals(after.size(), before.size() + 1);
+        log.info("Created new Group with name " + groupData.getName());
+
+        int maxID = after.stream().max(Comparator.comparingInt(GroupData::getId)).get().getId();
+        groupData.setId(maxID);
+        before.add(groupData);
+        Assert.assertEquals(new HashSet<Object>(after), new HashSet<Object>(before));
+        log.info("Lists of groups before and after creation has remained unchanged");
     }
 }

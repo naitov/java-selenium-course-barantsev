@@ -3,10 +3,11 @@ package online.addressbook.tests.grouptests;
 import lombok.extern.java.Log;
 import online.addressbook.model.GroupData;
 import online.addressbook.tests.TestBase;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
+
+import static org.testng.Assert.assertEquals;
 
 @Log
 public class GroupDeletionTests extends TestBase {
@@ -21,8 +22,12 @@ public class GroupDeletionTests extends TestBase {
         app.getGroupHelper().selectGroup(before.size() - 1);
         app.getGroupHelper().deleteGroup();
         app.getGroupHelper().returnToGroupPage();
-        log.info("Deleted first group in list");
         List<GroupData> after = app.getGroupHelper().getGroupList();
-        Assert.assertEquals(after.size(), before.size() - 1);
+        assertEquals(after.size(), before.size() - 1);
+        log.info("Removed the last group in list");
+
+        before.remove(before.size() - 1);
+        assertEquals(after, before);
+        log.info("List of other groups after deletion has remained unchanged");
     }
 }
