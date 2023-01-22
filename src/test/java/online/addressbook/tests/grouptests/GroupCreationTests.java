@@ -26,10 +26,12 @@ public class GroupCreationTests extends TestBase {
         Assert.assertEquals(after.size(), before.size() + 1);
         log.info("Created new Group with name " + groupData.getName());
 
-        int maxID = after.stream().max(Comparator.comparingInt(GroupData::getId)).get().getId();
-        groupData.setId(maxID);
+        Comparator<? super GroupData> byID = Comparator.comparingInt(GroupData::getId);
+        groupData.setId(after.stream().max(byID).get().getId());
         before.add(groupData);
-        Assert.assertEquals(new HashSet<Object>(after), new HashSet<Object>(before));
+        before.sort(byID);
+        after.sort(byID);
+        Assert.assertEquals(after, before);
         log.info("Lists of groups before and after creation has remained unchanged");
     }
 }
