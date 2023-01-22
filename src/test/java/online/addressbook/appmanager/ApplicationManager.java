@@ -35,7 +35,7 @@ public class ApplicationManager {
         return navigationHelper;
     }
 
-    public void init() {
+    public void initWebDriver() {
         switch (browser.toLowerCase()) {
             case "chrome" -> driver = new ChromeDriver();
             case "firefox" -> driver = new FirefoxDriver();

@@ -1,4 +1,4 @@
-package online.addressbook.tests.contacttests;
+package online.addressbook.tests.contact;
 
 import lombok.extern.java.Log;
 import online.addressbook.model.ContactData;
@@ -17,7 +17,10 @@ public class ContactDeletionTests extends TestBase {
         app.goTo().mainPage();
         if (app.contact().list().size() == 0) {
             app.goTo().contactPage();
-            app.contact().create(new ContactData("test1", "test2", "test33"));
+            app.contact().create(new ContactData()
+                    .withFirstName("test1")
+                    .withLastName("test2")
+                    .withGroup("test33"));
         }
     }
 

@@ -1,4 +1,4 @@
-package online.addressbook.tests.contacttests;
+package online.addressbook.tests.contact;
 
 import lombok.extern.java.Log;
 import online.addressbook.model.ContactData;
@@ -18,7 +18,10 @@ public class ContactModificationTests extends TestBase {
         app.goTo().mainPage();
         if (app.contact().list().size() == 0) {
             app.goTo().contactPage();
-            app.contact().create(new ContactData("test1", "test2", "test33"));
+            app.contact().create(new ContactData()
+                    .withFirstName("test1")
+                    .withLastName("test2")
+                    .withGroup("test33"));
         }
     }
 
@@ -26,7 +29,9 @@ public class ContactModificationTests extends TestBase {
     public void testContactModification() {
         ensurePreconditions();
         List<ContactData> before = app.contact().list();
-        ContactData contact = new ContactData("test1_m", "test2_m", null);
+        ContactData contact = new ContactData()
+                .withFirstName("test1_m")
+                .withLastName("test2_m");
         int index = before.size() - 1;
         app.contact().modify(contact, index);
         List<ContactData> after = app.contact().list();

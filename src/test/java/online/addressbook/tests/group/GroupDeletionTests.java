@@ -1,4 +1,4 @@
-package online.addressbook.tests.grouptests;
+package online.addressbook.tests.group;
 
 import lombok.extern.java.Log;
 import online.addressbook.model.GroupData;
@@ -17,7 +17,7 @@ public class GroupDeletionTests extends TestBase {
     private void ensurePreconditions() {
         app.goTo().groupPage();
         if (app.group().list().size() == 0) {
-            app.group().create(new GroupData("test1", null, null));
+            app.group().create(new GroupData().withName("test1"));
         }
     }
 

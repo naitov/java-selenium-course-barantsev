@@ -6,16 +6,23 @@ import java.util.Objects;
 
 @Getter
 public final class ContactData {
-    private final String firstName;
-    private final String lastName;
-    private final String group;
+    private String firstName;
+    private String lastName;
+    private String group;
 
-    public ContactData(String firstName, String lastName, String group) {
+    public ContactData withFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
+    }
+
+    public ContactData withLastName(String lastName) {
         this.lastName = lastName;
+        return this;
+    }
+
+    public ContactData withGroup(String group) {
         this.group = group;
-        Objects.requireNonNull(firstName);
-        Objects.requireNonNull(lastName);
+        return this;
     }
 
     @Override

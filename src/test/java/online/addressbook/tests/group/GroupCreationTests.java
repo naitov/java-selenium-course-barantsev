@@ -1,4 +1,4 @@
-package online.addressbook.tests.grouptests;
+package online.addressbook.tests.group;
 
 import lombok.extern.java.Log;
 import online.addressbook.model.GroupData;
@@ -16,14 +16,17 @@ public class GroupCreationTests extends TestBase {
     public void testGroupCreation() {
         app.goTo().groupPage();
         List<GroupData> before = app.group().list();
-        GroupData groupData = new GroupData("test33", "test33", "test33");
+        GroupData groupData = new GroupData()
+                .withName("test33")
+                .withHeader("test33")
+                .withFooter("test33");
         app.group().create(groupData);
         List<GroupData> after = app.group().list();
         Assert.assertEquals(after.size(), before.size() + 1);
         log.info("Created new Group with name " + groupData.getName());
 
         Comparator<? super GroupData> byId = Comparator.comparingInt(GroupData::getId);
-        groupData.setId(after.stream().max(byId).get().getId());
+        groupData.withId(after.stream().max(byId).get().getId());
         before.add(groupData);
         before.sort(byId);
         after.sort(byId);

@@ -82,7 +82,10 @@ public class ContactHelper extends HelperBase {
             String surnameName = e.getText();
             String surname = surnameName.substring(0, surnameName.indexOf(" "));
             String name = surnameName.substring(surnameName.indexOf(" ") + 1);
-            contacts.add(new ContactData(name, surname, "test33"));
+            contacts.add(new ContactData()
+                    .withFirstName(name)
+                    .withLastName(surname)
+                    .withGroup("test33"));
         }
         return contacts;
     }
