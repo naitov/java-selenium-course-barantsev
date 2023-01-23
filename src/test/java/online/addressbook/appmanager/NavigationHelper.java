@@ -16,7 +16,7 @@ public class NavigationHelper extends HelperBase {
         click(By.xpath("//*[@id='nav']/ul/li[3]/a"));
     }
 
-    public void contactPage() {
+    public void contactCreationPage() {
         if (isElementPresent(By.name("quickadd"))) {
             return;
         }

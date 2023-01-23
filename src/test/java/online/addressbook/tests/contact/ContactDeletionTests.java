@@ -2,6 +2,7 @@ package online.addressbook.tests.contact;
 
 import lombok.extern.java.Log;
 import online.addressbook.model.ContactData;
+import online.addressbook.model.Contacts;
 import online.addressbook.tests.TestBase;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -15,8 +16,8 @@ public class ContactDeletionTests extends TestBase {
     @BeforeMethod
     private void ensurePreconditions() {
         app.goTo().mainPage();
-        if (app.contact().list().size() == 0) {
-            app.goTo().contactPage();
+        if (app.contact().all().size() == 0) {
+            app.goTo().contactCreationPage();
             app.contact().create(new ContactData()
                     .withFirstName("test1")
                     .withLastName("test2")
@@ -27,10 +28,10 @@ public class ContactDeletionTests extends TestBase {
     @Test
     public void testContactDeletion() {
         ensurePreconditions();
-        List<ContactData> before = app.contact().list();
+        Contacts before = app.contact().all();
         int index = before.size() - 1;
         app.contact().delete(index);
-        List<ContactData> after = app.contact().list();
+        Contacts after = app.contact().all();
         Assert.assertEquals(after.size(), index);
         log.info("Contact has been removed");
 

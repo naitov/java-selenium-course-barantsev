@@ -2,6 +2,7 @@ package online.addressbook.appmanager;
 
 import lombok.extern.java.Log;
 import online.addressbook.model.ContactData;
+import online.addressbook.model.Contacts;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,7 +11,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Log
 public class ContactHelper extends HelperBase {
@@ -34,6 +37,10 @@ public class ContactHelper extends HelperBase {
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
+    }
+    public int amount() {
+        return new WebDriverWait(driver, getTimeout(Timeouts.FIVE_SEC))
+                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.name("selected[]"))).size();
     }
 
     public void selectContact(int index) {
@@ -73,8 +80,8 @@ public class ContactHelper extends HelperBase {
         submitModification();
     }
 
-    public List<ContactData> list() {
-        List<ContactData> contacts = new ArrayList<>();
+    public Contacts all() {
+        Contacts contacts = new Contacts();
         List<WebElement> elements = new WebDriverWait(driver, getTimeout(Timeouts.FIVE_SEC))
                 .until(ExpectedConditions.presenceOfAllElementsLocatedBy(
                         By.xpath("//*[@id='maintable']/tbody/*/td[3]")));
