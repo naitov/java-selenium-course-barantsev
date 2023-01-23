@@ -64,6 +64,7 @@ public class GroupHelper extends HelperBase {
         initGroupCreation();
         fillGroupForm(group);
         submitCreation();
+        groupCache = null;
         returnToGroupPage();
     }
 
@@ -72,24 +73,31 @@ public class GroupHelper extends HelperBase {
         initGroupModification();
         fillGroupForm(group);
         submitGroupModification();
+        groupCache = null;
         returnToGroupPage();
     }
 
     public void delete(GroupData group) {
         selectGroupById(group.getId());
         deleteGroup();
+        groupCache = null;
         returnToGroupPage();
     }
 
+    private Groups groupCache = null;
+
     public Groups all() {
-        Groups groups = new Groups();
+        if (groupCache != null) {
+            return new Groups(groupCache);
+        }
+        groupCache = new Groups();
         List<WebElement> elements = driver.findElements(By.xpath("//input[@type='checkbox']"));
         for (WebElement element : elements) {
             int id = Integer.parseInt(element.getAttribute("value"));
             String name = element.getAttribute("title").substring(8, element.getAttribute("title").length() - 1);
             GroupData gData = new GroupData().withId(id).withName(name);
-            groups.add(gData);
+            groupCache.add(gData);
         }
-        return groups;
+        return groupCache;
     }
 }
