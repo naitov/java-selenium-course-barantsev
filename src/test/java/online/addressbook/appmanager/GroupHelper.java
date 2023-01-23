@@ -2,6 +2,7 @@ package online.addressbook.appmanager;
 
 import lombok.extern.java.Log;
 import online.addressbook.model.GroupData;
+import online.addressbook.model.Groups;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -80,8 +81,8 @@ public class GroupHelper extends HelperBase {
         returnToGroupPage();
     }
 
-    public Set<GroupData> all() {
-        Set<GroupData> groups = new HashSet<>();
+    public Groups all() {
+        Groups groups = new Groups();
         List<WebElement> elements = driver.findElements(By.xpath("//input[@type='checkbox']"));
         for (WebElement element : elements) {
             int id = Integer.parseInt(element.getAttribute("value"));

@@ -9,6 +9,9 @@ import org.testng.annotations.Test;
 
 import java.util.Set;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
 @Log
 public class GroupModificationTests extends TestBase {
 
@@ -31,7 +34,7 @@ public class GroupModificationTests extends TestBase {
                 .withFooter("test3");
         app.group().modify(group);
         Set<GroupData> after = app.group().all();
-        Assert.assertEquals(after.size(), before.size());
-        log.info("Set sizes before and after modification are equal.");
+        assertThat(after.size(), equalTo(before.size()));
+        log.info("Sets before and after modification have equal size");
     }
 }
