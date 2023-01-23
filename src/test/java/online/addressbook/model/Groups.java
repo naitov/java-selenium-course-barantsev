@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class Groups extends ForwardingSet<GroupData> {
 
-    private Set<GroupData> delegate;
+    private final Set<GroupData> delegate;
 
     public Groups(Groups groups) {
         this.delegate = new HashSet<>(groups.delegate);
@@ -27,6 +27,7 @@ public class Groups extends ForwardingSet<GroupData> {
         groups.add(group);
         return groups;
     }
+
     public Groups without(GroupData group) {
         Groups groups = new Groups(this);
         groups.remove(group);

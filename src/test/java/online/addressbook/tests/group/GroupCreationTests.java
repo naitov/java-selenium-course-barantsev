@@ -18,12 +18,21 @@ public class GroupCreationTests extends TestBase {
         Groups before = app.group().all();
         GroupData group = new GroupData().withName("test33");
         app.group().create(group);
+        assertThat(app.group().amount(), equalTo(before.size() + 1));
         Groups after = app.group().all();
-        assertThat(after.size(), equalTo(before.size() + 1));
-        log.info("Created new Group with name " + group.getName());
         assertThat(after, equalTo(before.withAdded(group.withId(after.stream().mapToInt(GroupData::getId).max().getAsInt()))));
-        log.info("Lists of groups before and after creation has remained unchanged");
+        log.info("Created one group, other groups are unchanged");
     }
 
-
+    @Test
+    public void testBadGroupCreation() {
+        app.goTo().groupPage();
+        Groups before = app.group().all();
+        GroupData group = new GroupData().withName("test33'");
+        app.group().create(group);
+        assertThat(app.group().amount(), equalTo(before.size()));
+        Groups after = app.group().all();
+        assertThat(after, equalTo(before));
+        log.info("Created one group, other groups are unchanged");
+    }
 }

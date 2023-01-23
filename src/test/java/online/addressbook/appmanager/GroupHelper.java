@@ -7,12 +7,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Log
 public class GroupHelper extends HelperBase {
+
+    private Groups groupCache = null;
 
     public GroupHelper(WebDriver driver) {
         super(driver);
@@ -56,7 +56,7 @@ public class GroupHelper extends HelperBase {
         return isElementPresent(By.name("selected[]"));
     }
 
-    public int getGroupCount() {
+    public int amount() {
         return driver.findElements(By.name("selected[]")).size();
     }
 
@@ -83,8 +83,6 @@ public class GroupHelper extends HelperBase {
         groupCache = null;
         returnToGroupPage();
     }
-
-    private Groups groupCache = null;
 
     public Groups all() {
         if (groupCache != null) {

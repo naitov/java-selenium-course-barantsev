@@ -3,7 +3,6 @@ package online.addressbook.tests.group;
 import lombok.extern.java.Log;
 import online.addressbook.model.GroupData;
 import online.addressbook.tests.TestBase;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
