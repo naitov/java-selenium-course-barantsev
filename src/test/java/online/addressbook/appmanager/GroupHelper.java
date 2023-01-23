@@ -6,15 +6,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Log
 public class GroupHelper extends HelperBase {
 
     public GroupHelper(WebDriver driver) {
         super(driver);
-
     }
 
     public void returnToGroupPage() {
@@ -39,8 +39,8 @@ public class GroupHelper extends HelperBase {
         click(By.name("delete"));
     }
 
-    public void selectGroup(int index) {
-        driver.findElements(By.name("selected[]")).get(index).click();
+    private void selectGroupById(int id) {
+        driver.findElement(By.cssSelector("input[value='" + id + "']")).click();
     }
 
     public void initGroupModification() {
@@ -51,6 +51,14 @@ public class GroupHelper extends HelperBase {
         click(By.name("update"));
     }
 
+    public boolean isThereAGroup() {
+        return isElementPresent(By.name("selected[]"));
+    }
+
+    public int getGroupCount() {
+        return driver.findElements(By.name("selected[]")).size();
+    }
+
     public void create(GroupData group) {
         initGroupCreation();
         fillGroupForm(group);
@@ -58,29 +66,29 @@ public class GroupHelper extends HelperBase {
         returnToGroupPage();
     }
 
-    public void delete(int index) {
-        selectGroup(index);
-        deleteGroup();
-        returnToGroupPage();
-    }
-
-    public void modify(int index, GroupData group) {
-        selectGroup(index);
+    public void modify(GroupData group) {
+        selectGroupById(group.getId());
         initGroupModification();
         fillGroupForm(group);
         submitGroupModification();
         returnToGroupPage();
     }
 
-    public List<GroupData> list() {
-        List<GroupData> groupList = new ArrayList<>();
+    public void delete(GroupData group) {
+        selectGroupById(group.getId());
+        deleteGroup();
+        returnToGroupPage();
+    }
+
+    public Set<GroupData> all() {
+        Set<GroupData> groups = new HashSet<>();
         List<WebElement> elements = driver.findElements(By.xpath("//input[@type='checkbox']"));
         for (WebElement element : elements) {
             int id = Integer.parseInt(element.getAttribute("value"));
             String name = element.getAttribute("title").substring(8, element.getAttribute("title").length() - 1);
             GroupData gData = new GroupData().withId(id).withName(name);
-            groupList.add(gData);
+            groups.add(gData);
         }
-        return groupList;
+        return groups;
     }
 }
