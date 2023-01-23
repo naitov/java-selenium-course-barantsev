@@ -34,7 +34,7 @@ public class ContactDeletionTests extends TestBase {
         Assert.assertEquals(after.size(), index);
         log.info("Contact has been removed");
 
-        before.remove(before.size() - 1);
+        before.remove(index);
         Assert.assertEquals(after, before);
         log.info("Two lists before and after deletion has remained unchanged");
     }
