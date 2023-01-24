@@ -13,6 +13,7 @@ public final class ContactData {
     private String homePhone;
     private String mobilePhone;
     private String workPhone;
+    private String email;
 
     public ContactData withId(int id) {
         this.id = id;
@@ -50,18 +51,6 @@ public final class ContactData {
     }
 
     @Override
-    public String toString() {
-        return "ContactData{" +
-               "id=" + id +
-               ", firstName='" + firstName + '\'' +
-               ", lastName='" + lastName + '\'' +
-               ", homePhone='" + homePhone + '\'' +
-               ", mobilePhone='" + mobilePhone + '\'' +
-               ", workPhone='" + workPhone + '\'' +
-               '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -70,12 +59,31 @@ public final class ContactData {
                && Objects.equals(lastName, that.lastName)
                && Objects.equals(homePhone, that.homePhone)
                && Objects.equals(mobilePhone, that.mobilePhone)
-               && Objects.equals(workPhone, that.workPhone);
+               && Objects.equals(workPhone, that.workPhone)
+               && Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, homePhone, mobilePhone, workPhone);
+        return Objects.hash(id, firstName, lastName, homePhone, mobilePhone, workPhone, email);
+    }
+
+    public ContactData withEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactData{" +
+               "id=" + id +
+               ", firstName='" + firstName + '\'' +
+               ", lastName='" + lastName + '\'' +
+               ", homePhone='" + homePhone + '\'' +
+               ", mobilePhone='" + mobilePhone + '\'' +
+               ", workPhone='" + workPhone + '\'' +
+               ", email='" + email + '\'' +
+               '}';
     }
 
     public ContactData withoutBannedSymbolsInPhones() {
@@ -84,5 +92,4 @@ public final class ContactData {
         this.workPhone = workPhone.replaceAll("[-)(\\s]", "");
         return this;
     }
-
 }

@@ -19,11 +19,11 @@ public class ContactPhonesTest extends TestBase {
                 .withFirstName("test_ph_name")
                 .withLastName("test_ph_surname")
                 .withHomePhone("+48 223392839")
-                .withMobilePhone("(0) 223323323")
+                .withMobilePhone("+48 (22) 339-28-39")
                 .withWorkPhone("222-333-444");
         app.contact().create(testPhonesContact);
         Contacts contacts = app.contact().all();
-        ContactData contactInTable = app.contact().getValuesFromTable(testPhonesContact.withId(
+        ContactData contactInTable = app.contact().withPhonesFromTable(testPhonesContact.withId(
                 contacts.stream().mapToInt(ContactData::getId).max().getAsInt()));
         assertThat(testPhonesContact.withoutBannedSymbolsInPhones(), equalTo(contactInTable));
         log.info("Phones in contact creation form and in contact table are equal");

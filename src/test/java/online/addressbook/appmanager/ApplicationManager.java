@@ -43,7 +43,7 @@ public class ApplicationManager {
             default -> throw new IllegalArgumentException("Wrong browser");
         }
         driver.manage().timeouts().implicitlyWait(Duration.of(0, ChronoUnit.SECONDS));
-        driver.get("http://addressbook2077.online/addressbook/");
+        driver.get("https://addressbook2077.online/addressbook/");
         groupHelper = new GroupHelper(driver);
         navigationHelper = new NavigationHelper(driver);
         sessionHelper = new SessionHelper(driver);

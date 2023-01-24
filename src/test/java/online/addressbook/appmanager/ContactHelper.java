@@ -35,9 +35,18 @@ public class ContactHelper extends HelperBase {
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
-        type(By.name("home"), contactData.getHomePhone());
-        type(By.name("mobile"), contactData.getMobilePhone());
-        type(By.name("work"), contactData.getWorkPhone());
+        if (contactData.getHomePhone() != null) {
+            type(By.name("home"), contactData.getHomePhone());
+        }
+        if (contactData.getMobilePhone() != null) {
+            type(By.name("mobile"), contactData.getMobilePhone());
+        }
+        if (contactData.getWorkPhone() != null) {
+            type(By.name("work"), contactData.getWorkPhone());
+        }
+        if (contactData.getEmail() != null) {
+            type(By.name("email"), contactData.getEmail());
+        }
     }
 
     public int amount() {
@@ -110,7 +119,7 @@ public class ContactHelper extends HelperBase {
         return contactCache;
     }
 
-    public ContactData getValuesFromTable(ContactData contact) {
+    public ContactData withPhonesFromTable(ContactData contact) {
         int id = contact.getId();
         WebElement row = getWebElementWithClickableWait(By.xpath("//input[@id='" + id + "']"),
                 getTimeout(Timeouts.FIVE_SEC));
@@ -126,5 +135,21 @@ public class ContactHelper extends HelperBase {
                 .withHomePhone(phones[0])
                 .withMobilePhone(phones[1])
                 .withWorkPhone(phones[2]);
+    }
+
+    public ContactData withEmailFromTable(ContactData contact) {
+        int id = contact.getId();
+        WebElement row = getWebElementWithClickableWait(By.xpath("//input[@id='" + id + "']"),
+                getTimeout(Timeouts.FIVE_SEC));
+        WebElement record = row.findElement(By.xpath("./../.."));
+        String surnameName = record.findElement(By.xpath("./td[3]")).getText();
+        String surname = surnameName.substring(0, surnameName.indexOf(" "));
+        String name = surnameName.substring(surnameName.indexOf(" ") + 1);
+        String email = record.findElement(By.xpath("./td[5]")).getText();
+        return new ContactData()
+                .withId(id)
+                .withFirstName(name)
+                .withLastName(surname)
+                .withEmail(email);
     }
 }
