@@ -4,12 +4,11 @@ import lombok.extern.java.Log;
 import online.addressbook.model.ContactData;
 import online.addressbook.model.Contacts;
 import online.addressbook.tests.TestBase;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.Comparator;
-import java.util.List;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 @Log
 public class ContactModificationTests extends TestBase {
@@ -28,22 +27,16 @@ public class ContactModificationTests extends TestBase {
 
     @Test
     public void testContactModification() {
-        ensurePreconditions();
         Contacts before = app.contact().all();
+        ContactData modifiedContact = before.stream().iterator().next();
         ContactData contact = new ContactData()
+                .withId(modifiedContact.getId())
                 .withFirstName("test1_m")
                 .withLastName("test2_m");
-        int index = before.size() - 1;
-        app.contact().modify(contact, index);
+        app.contact().modify(contact);
+        assertThat(app.contact().amount(), equalTo(before.size()));
         Contacts after = app.contact().all();
-        Assert.assertEquals(after.size(), before.size());
-        log.info("Contact has been modified");
-
-        before.remove(index);
-        before.add(contact);
-        Assert.assertEquals(after, before);
-        log.info("Lists of contacts before and after modification except modified contact are equal");
+        assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact)));
+        log.info("Modified one contact, other contacts are unchanged");
     }
-
-
 }

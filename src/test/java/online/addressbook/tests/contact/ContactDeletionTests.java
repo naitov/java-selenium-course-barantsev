@@ -4,11 +4,11 @@ import lombok.extern.java.Log;
 import online.addressbook.model.ContactData;
 import online.addressbook.model.Contacts;
 import online.addressbook.tests.TestBase;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.List;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 @Log
 public class ContactDeletionTests extends TestBase {
@@ -27,18 +27,12 @@ public class ContactDeletionTests extends TestBase {
 
     @Test
     public void testContactDeletion() {
-        ensurePreconditions();
         Contacts before = app.contact().all();
-        int index = before.size() - 1;
-        app.contact().delete(index);
+        ContactData deletedContact = before.stream().iterator().next();
+        app.contact().delete(deletedContact);
+        assertThat(app.contact().amount(), equalTo(before.size() - 1));
         Contacts after = app.contact().all();
-        Assert.assertEquals(after.size(), index);
-        log.info("Contact has been removed");
-
-        before.remove(index);
-        Assert.assertEquals(after, before);
-        log.info("Two lists before and after deletion has remained unchanged");
+        assertThat(after, equalTo(before.without(deletedContact)));
+        log.info("Removed one contact, other contacts are unchanged");
     }
-
-
 }

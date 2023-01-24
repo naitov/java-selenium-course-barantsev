@@ -9,6 +9,12 @@ public final class ContactData {
     private String firstName;
     private String lastName;
     private String group;
+    private int id;
+
+    public ContactData withId(int id) {
+        this.id = id;
+        return this;
+    }
 
     public ContactData withFirstName(String firstName) {
         this.firstName = firstName;
@@ -30,12 +36,12 @@ public final class ContactData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ContactData that = (ContactData) o;
-        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
+        return id == that.id && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName);
+        return Objects.hash(firstName, lastName, id);
     }
 
     @Override
@@ -45,5 +51,4 @@ public final class ContactData {
                "lastName=" + lastName + ", " +
                "group=" + group + ']';
     }
-
 }

@@ -4,11 +4,7 @@ import lombok.extern.java.Log;
 import online.addressbook.model.ContactData;
 import online.addressbook.model.Contacts;
 import online.addressbook.tests.TestBase;
-import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.util.Comparator;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -27,10 +23,8 @@ public class ContactCreationTests extends TestBase {
         app.contact().create(contact);
         assertThat(app.contact().amount(), equalTo(before.size() + 1));
         Contacts after = app.contact().all();
-        assertThat(after, equalTo(before.withAdded(contact)));
+        assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt(ContactData::getId).max().getAsInt()))));
         log.info("Created one contact, other contacts are unchanged");
     }
-
-
 }
 
