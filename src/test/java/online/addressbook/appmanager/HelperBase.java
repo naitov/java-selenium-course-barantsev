@@ -27,6 +27,7 @@ public class HelperBase {
     protected WebElement getWebElementWithClickableWait(By by, Duration timeout) {
         return new WebDriverWait(driver, timeout).until(ExpectedConditions.elementToBeClickable(by));
     }
+
     protected WebElement getWebElementWithPresenceWait(By by, Duration timeout) {
         return new WebDriverWait(driver, timeout).until(ExpectedConditions.presenceOfElementLocated(by));
     }
