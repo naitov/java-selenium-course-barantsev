@@ -9,16 +9,24 @@ public class NavigationHelper extends HelperBase {
         super(driver);
     }
 
-    public void gotoGroupPage() {
-
+    public void groupPage() {
+        if (isElementPresent(By.name("new")) && driver.getCurrentUrl().contains("/group.php")) {
+            return;
+        }
         click(By.xpath("//*[@id='nav']/ul/li[3]/a"));
     }
 
-    public void gotoContactPage() {
+    public void contactCreationPage() {
+        if (isElementPresent(By.name("quickadd"))) {
+            return;
+        }
         click(By.xpath("//*[@id='nav']/ul/li[2]/a"));
     }
 
-    public void goToMainPage() {
+    public void mainPage() {
+        if (isElementPresent(By.id("maintable"))) {
+            return;
+        }
         click(By.xpath("//*[@id='nav']/ul/li[1]/a"));
     }
 }

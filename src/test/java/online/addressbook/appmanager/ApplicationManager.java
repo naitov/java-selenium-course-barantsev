@@ -2,7 +2,6 @@ package online.addressbook.appmanager;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.Getter;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -12,22 +11,31 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 public class ApplicationManager {
+    private final String browser;
     private WebDriver driver;
-    @Getter
     private NavigationHelper navigationHelper;
     @Getter
-    private GroupHelper groupHelper;
-    @Getter
     private SessionHelper sessionHelper;
-    @Getter
+    private GroupHelper groupHelper;
     private ContactHelper contactHelper;
-    private final String browser;
 
     public ApplicationManager(String browser) {
         this.browser = browser;
     }
 
-    public void init() {
+    public GroupHelper group() {
+        return groupHelper;
+    }
+
+    public ContactHelper contact() {
+        return contactHelper;
+    }
+
+    public NavigationHelper goTo() {
+        return navigationHelper;
+    }
+
+    public void initWebDriver() {
         switch (browser.toLowerCase()) {
             case "chrome" -> driver = new ChromeDriver();
             case "firefox" -> driver = new FirefoxDriver();
@@ -35,7 +43,7 @@ public class ApplicationManager {
             default -> throw new IllegalArgumentException("Wrong browser");
         }
         driver.manage().timeouts().implicitlyWait(Duration.of(0, ChronoUnit.SECONDS));
-        driver.get("https://addressbook2077.000webhostapp.com/");
+        driver.get("https://addressbook2077.online/addressbook/");
         groupHelper = new GroupHelper(driver);
         navigationHelper = new NavigationHelper(driver);
         sessionHelper = new SessionHelper(driver);

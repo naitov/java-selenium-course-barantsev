@@ -16,7 +16,7 @@ public class HelperBase {
         this.driver = driver;
     }
 
-    private static Duration getTimeout(Timeouts amount) {
+    protected static Duration getTimeout(Timeouts amount) {
         return Duration.of(amount.getValue(), ChronoUnit.SECONDS);
     }
 
@@ -28,11 +28,16 @@ public class HelperBase {
         return new WebDriverWait(driver, timeout).until(ExpectedConditions.elementToBeClickable(by));
     }
 
+    protected WebElement getWebElementWithPresenceWait(By by, Duration timeout) {
+        return new WebDriverWait(driver, timeout).until(ExpectedConditions.presenceOfElementLocated(by));
+    }
+
     protected void type(By locator, String text) {
         if (text != null) {
             String existingText = getWebElementWithClickableWait(locator, getTimeout(Timeouts.TWO_SEC)).getAttribute("value");
             if (!existingText.equals(text)) {
                 click(locator);
+                driver.findElement(locator).clear();
                 driver.findElement(locator).sendKeys(text);
             }
         }
@@ -61,7 +66,7 @@ public class HelperBase {
         new Select(driver.findElement(listLocator)).selectByVisibleText(text);
     }
 
-    private enum Timeouts {
+    protected enum Timeouts {
         TWO_SEC(2),
         FIVE_SEC(5);
         @Getter
