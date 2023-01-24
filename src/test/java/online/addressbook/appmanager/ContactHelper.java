@@ -26,7 +26,7 @@ public class ContactHelper extends HelperBase {
 
     public void fillContactForm(ContactData contactData, boolean creation) {
         if (creation) {
-            click(By.cssSelector("#content > form > input[type=\"submit\"]:nth-child(1)"));
+            click(By.cssSelector("#content > form > input[type='submit']:nth-child(1)"));
         }
         type(By.name("firstname"), contactData.getFirstName());
         type(By.name("lastname"), contactData.getLastName());
@@ -35,6 +35,9 @@ public class ContactHelper extends HelperBase {
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
+        type(By.name("home"), contactData.getHomePhone());
+        type(By.name("mobile"), contactData.getMobilePhone());
+        type(By.name("work"), contactData.getWorkPhone());
     }
 
     public int amount() {
@@ -105,5 +108,23 @@ public class ContactHelper extends HelperBase {
                     .withGroup("test33"));
         }
         return contactCache;
+    }
+
+    public ContactData getValuesFromTable(ContactData contact) {
+        int id = contact.getId();
+        WebElement row = getWebElementWithClickableWait(By.xpath("//input[@id='" + id + "']"),
+                getTimeout(Timeouts.FIVE_SEC));
+        WebElement record = row.findElement(By.xpath("./../.."));
+        String surnameName = record.findElement(By.xpath("./td[3]")).getText();
+        String surname = surnameName.substring(0, surnameName.indexOf(" "));
+        String name = surnameName.substring(surnameName.indexOf(" ") + 1);
+        String[] phones = record.findElement(By.xpath("./td[6]")).getText().split("\n");
+        return new ContactData()
+                .withId(id)
+                .withFirstName(name)
+                .withLastName(surname)
+                .withHomePhone(phones[0])
+                .withMobilePhone(phones[1])
+                .withWorkPhone(phones[2]);
     }
 }

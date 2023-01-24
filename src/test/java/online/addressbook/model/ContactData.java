@@ -6,10 +6,13 @@ import java.util.Objects;
 
 @Getter
 public final class ContactData {
+    private int id;
     private String firstName;
     private String lastName;
-    private String group;
-    private int id;
+    private String group = "test33";
+    private String homePhone;
+    private String mobilePhone;
+    private String workPhone;
 
     public ContactData withId(int id) {
         this.id = id;
@@ -31,24 +34,55 @@ public final class ContactData {
         return this;
     }
 
+    public ContactData withHomePhone(String homePhone) {
+        this.homePhone = homePhone;
+        return this;
+    }
+
+    public ContactData withMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+        return this;
+    }
+
+    public ContactData withWorkPhone(String workPhone) {
+        this.workPhone = workPhone;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactData{" +
+               "id=" + id +
+               ", firstName='" + firstName + '\'' +
+               ", lastName='" + lastName + '\'' +
+               ", homePhone='" + homePhone + '\'' +
+               ", mobilePhone='" + mobilePhone + '\'' +
+               ", workPhone='" + workPhone + '\'' +
+               '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ContactData that = (ContactData) o;
-        return id == that.id && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
+        return id == that.id && Objects.equals(firstName, that.firstName)
+               && Objects.equals(lastName, that.lastName)
+               && Objects.equals(homePhone, that.homePhone)
+               && Objects.equals(mobilePhone, that.mobilePhone)
+               && Objects.equals(workPhone, that.workPhone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, id);
+        return Objects.hash(id, firstName, lastName, homePhone, mobilePhone, workPhone);
     }
 
-    @Override
-    public String toString() {
-        return "ContactData[" +
-               "firstName=" + firstName + ", " +
-               "lastName=" + lastName + ", " +
-               "group=" + group + ']';
+    public ContactData withoutBannedSymbolsInPhones() {
+        this.homePhone = homePhone.replaceAll("[-)(\\s]", "");
+        this.mobilePhone = mobilePhone.replaceAll("[-)(\\s]", "");
+        this.workPhone = workPhone.replaceAll("[-)(\\s]", "");
+        return this;
     }
+
 }
