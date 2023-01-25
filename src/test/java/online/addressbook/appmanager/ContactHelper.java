@@ -1,6 +1,5 @@
 package online.addressbook.appmanager;
 
-import lombok.extern.java.Log;
 import online.addressbook.model.ContactData;
 import online.addressbook.model.Contacts;
 import org.openqa.selenium.By;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Log
+
 public class ContactHelper extends HelperBase {
     private Contacts contactCache = null;
 
@@ -36,6 +35,9 @@ public class ContactHelper extends HelperBase {
             selectElementByVisibleText(By.name("new_group"), contactData.getGroup());
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
+        }
+        if (contactData.getPhoto() != null) {
+            attach(By.name("photo"), contactData.getPhoto());
         }
         if (contactData.getHomePhone() != null) {
             type(By.name("home"), contactData.getHomePhone());

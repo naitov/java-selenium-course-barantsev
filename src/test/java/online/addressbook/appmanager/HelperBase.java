@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
@@ -41,6 +42,10 @@ public class HelperBase {
                 driver.findElement(locator).sendKeys(text);
             }
         }
+    }
+
+    protected void attach(By locator, File file) {
+        driver.findElement(locator).sendKeys(file.getAbsolutePath());
     }
 
     public boolean isAlertPresent() {

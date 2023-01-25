@@ -2,6 +2,7 @@ package online.addressbook.model;
 
 import lombok.Getter;
 
+import java.io.File;
 import java.util.Objects;
 
 @Getter
@@ -17,6 +18,7 @@ public final class ContactData {
     private String email;
     private String secondEmail;
     private String thirdEmail;
+    private File photo;
 
     public ContactData withId(int id) {
         this.id = id;
@@ -70,6 +72,11 @@ public final class ContactData {
 
     public ContactData withThirdEmail(String email) {
         thirdEmail = email;
+        return this;
+    }
+
+    public ContactData withPhoto(File photo) {
+        this.photo = photo;
         return this;
     }
 
