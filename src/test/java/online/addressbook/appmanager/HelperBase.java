@@ -68,7 +68,8 @@ public class HelperBase {
 
     protected enum Timeouts {
         TWO_SEC(2),
-        FIVE_SEC(5);
+        FIVE_SEC(5),
+        TEN_SEC(10);
         @Getter
         private final int value;
 

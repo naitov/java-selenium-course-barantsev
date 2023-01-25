@@ -10,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 @Log
-public class ContactPhonesTest extends TestBase {
+public class ContactPhonesTests extends TestBase {
 
     @Test
     public void testContactPhones() {

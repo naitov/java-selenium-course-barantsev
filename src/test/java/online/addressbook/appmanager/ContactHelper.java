@@ -10,6 +10,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Log
@@ -47,10 +49,19 @@ public class ContactHelper extends HelperBase {
         if (contactData.getEmail() != null) {
             type(By.name("email"), contactData.getEmail());
         }
+        if (contactData.getSecondEmail() != null) {
+            type(By.name("email2"), contactData.getSecondEmail());
+        }
+        if (contactData.getThirdEmail() != null) {
+            type(By.name("email3"), contactData.getThirdEmail());
+        }
+        if (contactData.getAddress() != null) {
+            type(By.name("address"), contactData.getAddress());
+        }
     }
 
     public int amount() {
-        return new WebDriverWait(driver, getTimeout(Timeouts.FIVE_SEC))
+        return new WebDriverWait(driver, getTimeout(Timeouts.TEN_SEC))
                 .until(ExpectedConditions.presenceOfAllElementsLocatedBy(
                         By.xpath("//*[@name='selected[]']"))).size();
     }
@@ -102,7 +113,7 @@ public class ContactHelper extends HelperBase {
             return new Contacts(contactCache);
         }
         contactCache = new Contacts();
-        List<WebElement> elements = new WebDriverWait(driver, getTimeout(Timeouts.FIVE_SEC))
+        List<WebElement> elements = new WebDriverWait(driver, getTimeout(Timeouts.TEN_SEC))
                 .until(ExpectedConditions.presenceOfAllElementsLocatedBy(
                         By.xpath("//tr[@name='entry']")));
         for (WebElement e : elements) {
@@ -151,5 +162,29 @@ public class ContactHelper extends HelperBase {
                 .withFirstName(name)
                 .withLastName(surname)
                 .withEmail(email);
+    }
+
+    public ContactData details(ContactData contact) {
+        int id = contact.getId();
+        getWebElementWithClickableWait(By.xpath("//a[@href='view.php?id=" + id + "']"),
+                getTimeout(Timeouts.FIVE_SEC)).click();
+        List<String> content = new ArrayList<>(Arrays.asList(driver.findElement(
+                By.xpath("//div[@id='content']")).getText().split("\n")));
+        return new ContactData()
+                .withId(id)
+                .withFirstName(content.get(0).substring(0, content.get(0).indexOf(" ")))
+                .withLastName(content.get(0).substring(content.get(0).indexOf(" ") + 1))
+                .withAddress(content.get(1))
+                .withHomePhone(trimmed(content.get(3)))
+                .withMobilePhone(trimmed(content.get(4)))
+                .withWorkPhone(trimmed(content.get(5)))
+                .withEmail(trimmed(content.get(7)))
+                .withSecondEmail(trimmed(content.get(8)))
+                .withThirdEmail(trimmed(content.get(9)));
+    }
+
+    private String trimmed(String s) {
+        return s.replaceAll("\\s[(]www.[a-zA-Z0-9]+[)]", "")
+                .replaceAll("[HMW]: ", "");
     }
 }
