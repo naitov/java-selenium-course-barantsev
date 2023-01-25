@@ -1,5 +1,6 @@
 package online.addressbook.tests.group;
 
+import com.thoughtworks.xstream.XStream;
 import lombok.extern.java.Log;
 import online.addressbook.model.GroupData;
 import online.addressbook.model.Groups;
@@ -10,7 +11,6 @@ import org.testng.annotations.Test;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,15 +22,18 @@ public class GroupCreationTests extends TestBase {
 
     @DataProvider
     public Iterator<Object[]> validGroups() throws IOException {
-        List<Object[]> list = new ArrayList<>();
-        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/groups.csv"));
+        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/groups.xml"));
+        String xml = "";
         String line = reader.readLine();
         while (line != null) {
-            String[] split = line.split(";");
-            list.add(new Object[]{new GroupData().withName(split[0]).withHeader(split[1]).withFooter(split[2])});
+            xml += line;
             line = reader.readLine();
         }
-        return list.iterator();
+        XStream xStream = new XStream();
+        xStream.allowTypes(new Class[]{GroupData.class});
+        xStream.processAnnotations(GroupData.class);
+        List<GroupData> groups = (List<GroupData>) xStream.fromXML(xml);
+        return groups.stream().map((groupData) -> new Object[]{groupData}).toList().iterator();
     }
 
     @Test(dataProvider = "validGroups")

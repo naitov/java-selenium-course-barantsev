@@ -1,14 +1,19 @@
 package online.addressbook.model;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import lombok.ToString;
 
 import java.util.Objects;
 
+@XStreamAlias("group")
 @ToString
 public final class GroupData {
     private String name;
     private String header;
     private String footer;
+
+    @XStreamOmitField
     private int id = 0;
 
     public int getId() {
