@@ -16,14 +16,10 @@ import java.util.List;
 
 @Log
 public class GroupDataGenerator {
-    @Parameter(names = "-c", description = "Group count")
+    @Parameter(names = "-c", description = "Amount of groups to create, e.g. \"-c 10\"")
     public int count;
-
-    @Parameter(names = "-f", description = "Path to file")
+    @Parameter(names = "-p", description = "Path to file, e.g. \"-p src/test/resources/groups.xml\"")
     public String file;
-
-    @Parameter(names = "-d", description = "Data format")
-    public String format;
 
     public static void main(String[] args) throws IOException {
         GroupDataGenerator generator = new GroupDataGenerator();
@@ -39,6 +35,7 @@ public class GroupDataGenerator {
 
     private void run() throws IOException {
         List<GroupData> groups = generateGroups(count);
+        String format = file.replaceAll("[a-zA-Z0-9/]+\\.", "");
         if (format.equals("csv")) {
             saveAsCsv(groups, new File(file));
         }
@@ -46,7 +43,7 @@ public class GroupDataGenerator {
             saveAsXml(groups, new File(file));
         }
         else {
-            log.info("Unrecognized format: " + format);
+            log.warning("Unrecognized format: " + format);
         }
     }
 
