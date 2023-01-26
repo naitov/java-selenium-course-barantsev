@@ -2,6 +2,7 @@ package online.addressbook.appmanager;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.Getter;
+import online.addressbook.utils.TestDataReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -43,12 +44,12 @@ public class ApplicationManager {
             default -> throw new IllegalArgumentException("Wrong browser");
         }
         driver.manage().timeouts().implicitlyWait(Duration.of(0, ChronoUnit.SECONDS));
-        driver.get("https://addressbook2077.online/addressbook/");
+        driver.get(TestDataReader.read("url"));
         groupHelper = new GroupHelper(driver);
         navigationHelper = new NavigationHelper(driver);
         sessionHelper = new SessionHelper(driver);
         contactHelper = new ContactHelper(driver);
-        sessionHelper.login("admin", "secret");
+        sessionHelper.login(TestDataReader.read("login"), TestDataReader.read("password"));
     }
 
     public void stop() {

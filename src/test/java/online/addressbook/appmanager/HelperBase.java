@@ -22,7 +22,7 @@ public class HelperBase {
     }
 
     protected void click(By by) {
-        getWebElementWithClickableWait(by, getTimeout(Timeouts.FIVE_SEC)).click();
+        getWebElementWithClickableWait(by, getTimeout(Timeouts.TEN_SEC)).click();
     }
 
     protected WebElement getWebElementWithClickableWait(By by, Duration timeout) {

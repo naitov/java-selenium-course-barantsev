@@ -1,4 +1,4 @@
-package online.addressbook.generators;
+package online.addressbook.utils;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;

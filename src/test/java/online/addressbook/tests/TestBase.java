@@ -8,7 +8,7 @@ import org.testng.annotations.BeforeSuite;
 @Log
 public class TestBase {
 
-    protected static final ApplicationManager app = new ApplicationManager("chrome");
+    protected static final ApplicationManager app = new ApplicationManager(System.getProperty("browser", "chrome"));
 
     @BeforeSuite
     public void setUpFramework() {
