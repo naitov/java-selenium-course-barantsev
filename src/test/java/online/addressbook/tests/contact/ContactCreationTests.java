@@ -16,6 +16,7 @@ public class ContactCreationTests extends TestBase {
 
     @Test
     public void testContactWithGroupCreation() {
+        app.goTo().mainPage();
         Contacts before = app.contact().all();
         app.goTo().contactCreationPage();
         ContactData contact = new ContactData()
@@ -26,11 +27,12 @@ public class ContactCreationTests extends TestBase {
         assertThat(app.contact().amount(), equalTo(before.size() + 1));
         Contacts after = app.contact().all();
         assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt(ContactData::getId).max().getAsInt()))));
-        log.info("Created one contact, other contacts are unchanged");
+        log.info("Created one contact with specific group, other contacts are unchanged");
     }
 
     @Test
     public void testContactWithPhotoCreation() {
+        app.goTo().mainPage();
         Contacts before = app.contact().all();
         app.goTo().contactCreationPage();
         File photo = new File("src/test/resources/cat.jpg");
@@ -42,7 +44,7 @@ public class ContactCreationTests extends TestBase {
         assertThat(app.contact().amount(), equalTo(before.size() + 1));
         Contacts after = app.contact().all();
         assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt(ContactData::getId).max().getAsInt()))));
-        log.info("Created one contact, other contacts are unchanged");
+        log.info("Created one contact with photo, other contacts are unchanged");
     }
 }
 
