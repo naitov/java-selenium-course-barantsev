@@ -3,6 +3,8 @@ package online.addressbook.generators;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.thoughtworks.xstream.XStream;
 import lombok.extern.java.Log;
 import online.addressbook.model.GroupData;
@@ -18,7 +20,8 @@ import java.util.List;
 public class GroupDataGenerator {
     @Parameter(names = "-c", description = "Amount of groups to create, e.g. \"-c 10\"")
     public int count;
-    @Parameter(names = "-p", description = "Path to file, e.g. \"-p src/test/resources/groups.xml\"")
+    @Parameter(names = "-f", description = "Path to file, e.g. \"-f src/test/resources/groups.xml\"\n" +
+                                           "Supported types: csv, xml, json")
     public String file;
 
     public static void main(String[] args) throws IOException {
@@ -36,15 +39,20 @@ public class GroupDataGenerator {
     private void run() throws IOException {
         List<GroupData> groups = generateGroups(count);
         String format = file.replaceAll("[a-zA-Z0-9/]+\\.", "");
-        if (format.equals("csv")) {
-            saveAsCsv(groups, new File(file));
+        switch (format) {
+            case "csv" -> saveAsCsv(groups, new File(file));
+            case "xml" -> saveAsXml(groups, new File(file));
+            case "json" -> saveAsJson(groups, new File(file));
+            default -> log.warning("Unrecognized format: " + format);
         }
-        else if (format.equals("xml")) {
-            saveAsXml(groups, new File(file));
-        }
-        else {
-            log.warning("Unrecognized format: " + format);
-        }
+    }
+
+    private void saveAsJson(List<GroupData> groups, File file) throws IOException {
+        Writer writer = new FileWriter(file);
+        Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+        String json = gson.toJson(groups);
+        writer.write(json);
+        writer.close();
     }
 
     private void saveAsXml(List<GroupData> groups, File file) throws IOException {

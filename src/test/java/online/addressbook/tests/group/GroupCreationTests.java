@@ -1,5 +1,7 @@
 package online.addressbook.tests.group;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.thoughtworks.xstream.XStream;
 import lombok.extern.java.Log;
 import online.addressbook.model.GroupData;
@@ -21,22 +23,36 @@ import static org.hamcrest.Matchers.equalTo;
 public class GroupCreationTests extends TestBase {
 
     @DataProvider
-    public Iterator<Object[]> validGroups() throws IOException {
+    public Iterator<Object[]> validGroupsFromXml() throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/groups.xml"));
-        String xml = "";
+        StringBuilder xml = new StringBuilder();
         String line = reader.readLine();
         while (line != null) {
-            xml += line;
+            xml.append(line);
             line = reader.readLine();
         }
         XStream xStream = new XStream();
         xStream.allowTypes(new Class[]{GroupData.class});
         xStream.processAnnotations(GroupData.class);
-        List<GroupData> groups = (List<GroupData>) xStream.fromXML(xml);
+        List<GroupData> groups = (List<GroupData>) xStream.fromXML(xml.toString());
         return groups.stream().map((groupData) -> new Object[]{groupData}).toList().iterator();
     }
 
-    @Test(dataProvider = "validGroups")
+    @DataProvider
+    public Iterator<Object[]> validGroupsFromJson() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/groups.json"));
+        StringBuilder json = new StringBuilder();
+        String line = reader.readLine();
+        while (line != null) {
+            json.append(line);
+            line = reader.readLine();
+        }
+        Gson gson = new Gson();
+        List<GroupData> groups = gson.fromJson(json.toString(), new TypeToken<>(){});
+        return groups.stream().map((groupData) -> new Object[]{groupData}).toList().iterator();
+    }
+
+    @Test(dataProvider = "validGroupsFromJson")
     public void testGroupCreation(GroupData g) {
         app.goTo().groupPage();
         Groups before = app.group().all();
