@@ -1,6 +1,6 @@
 package online.addressbook.tests.contact;
 
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import online.addressbook.model.ContactData;
 import online.addressbook.model.Contacts;
 import online.addressbook.tests.TestBase;
@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-@Log
+@Slf4j
 public class ContactDeletionTests extends TestBase {
 
     @BeforeMethod

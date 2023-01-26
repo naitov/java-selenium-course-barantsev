@@ -6,7 +6,7 @@ import com.beust.jcommander.ParameterException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoughtworks.xstream.XStream;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import online.addressbook.model.GroupData;
 
 import java.io.File;
@@ -16,7 +16,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-@Log
+@Slf4j
 public class GroupDataGenerator {
     @Parameter(names = "-c", description = "Amount of groups to create, e.g. \"-c 10\"")
     public int count;
@@ -31,7 +31,6 @@ public class GroupDataGenerator {
             jc.parse(args);
         } catch (ParameterException e) {
             jc.usage();
-            return;
         }
         generator.run();
     }
@@ -40,10 +39,19 @@ public class GroupDataGenerator {
         List<GroupData> groups = generateGroups(count);
         String format = file.replaceAll("[a-zA-Z0-9/]+\\.", "");
         switch (format) {
-            case "csv" -> saveAsCsv(groups, new File(file));
-            case "xml" -> saveAsXml(groups, new File(file));
-            case "json" -> saveAsJson(groups, new File(file));
-            default -> log.warning("Unrecognized format: " + format);
+            case "csv" -> {
+                saveAsCsv(groups, new File(file));
+                logSuccess(format);
+            }
+            case "xml" -> {
+                saveAsXml(groups, new File(file));
+                logSuccess(format);
+            }
+            case "json" -> {
+                saveAsJson(groups, new File(file));
+                logSuccess(format);
+            }
+            default -> log.warn("Unrecognized format: " + format);
         }
     }
 
@@ -80,5 +88,9 @@ public class GroupDataGenerator {
                     .withFooter(String.format("footer%s", i)));
         }
         return groups;
+    }
+
+    private void logSuccess(String format) {
+        log.info(String.format("Generated %s groups in groups.%s", count, format));
     }
 }

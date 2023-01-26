@@ -3,7 +3,7 @@ package online.addressbook.tests.group;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thoughtworks.xstream.XStream;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import online.addressbook.model.GroupData;
 import online.addressbook.model.Groups;
 import online.addressbook.tests.TestBase;
@@ -19,7 +19,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-@Log
+@Slf4j
 public class GroupCreationTests extends TestBase {
 
     @DataProvider
@@ -49,7 +49,8 @@ public class GroupCreationTests extends TestBase {
                 line = reader.readLine();
             }
             Gson gson = new Gson();
-            List<GroupData> groups = gson.fromJson(json.toString(), new TypeToken<>() {});
+            List<GroupData> groups = gson.fromJson(json.toString(), new TypeToken<>() {
+            });
             return groups.stream().map((groupData) -> new Object[]{groupData}).toList().iterator();
         }
     }
