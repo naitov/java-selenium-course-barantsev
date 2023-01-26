@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
@@ -21,7 +22,7 @@ public class HelperBase {
     }
 
     protected void click(By by) {
-        getWebElementWithClickableWait(by, getTimeout(Timeouts.FIVE_SEC)).click();
+        getWebElementWithClickableWait(by, getTimeout(Timeouts.TEN_SEC)).click();
     }
 
     protected WebElement getWebElementWithClickableWait(By by, Duration timeout) {
@@ -41,6 +42,10 @@ public class HelperBase {
                 driver.findElement(locator).sendKeys(text);
             }
         }
+    }
+
+    protected void attach(By locator, File file) {
+        driver.findElement(locator).sendKeys(file.getAbsolutePath());
     }
 
     public boolean isAlertPresent() {
@@ -68,7 +73,8 @@ public class HelperBase {
 
     protected enum Timeouts {
         TWO_SEC(2),
-        FIVE_SEC(5);
+        FIVE_SEC(5),
+        TEN_SEC(10);
         @Getter
         private final int value;
 

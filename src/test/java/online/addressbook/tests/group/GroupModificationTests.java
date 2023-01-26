@@ -1,6 +1,6 @@
 package online.addressbook.tests.group;
 
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import online.addressbook.model.GroupData;
 import online.addressbook.tests.TestBase;
 import org.testng.annotations.BeforeMethod;
@@ -11,7 +11,7 @@ import java.util.Set;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-@Log
+@Slf4j
 public class GroupModificationTests extends TestBase {
 
     @BeforeMethod
