@@ -1,18 +1,26 @@
 package online.addressbook.model;
 
+import com.google.gson.annotations.Expose;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import lombok.Getter;
 
 import java.io.File;
 import java.util.Objects;
 
+@XStreamAlias("contact")
 @Getter
 public final class ContactData {
     private int id;
+    @Expose
     private String firstName;
+    @Expose
     private String lastName;
     private String address;
+    @XStreamOmitField
     private String group = "test33";
     private String homePhone;
+    @Expose
     private String mobilePhone;
     private String workPhone;
     private String email;

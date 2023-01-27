@@ -76,6 +76,6 @@ public class GroupCreationTests extends TestBase {
         assertThat(app.group().amount(), equalTo(before.size()));
         Groups after = app.group().all();
         assertThat(after, equalTo(before));
-        log.info("Created one group, other groups are unchanged");
+        log.info("Couldn't create a group with forbidden symbols");
     }
 }
