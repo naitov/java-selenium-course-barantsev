@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 
-<suite name="Suite1" verbose="1" >
-    <test name="All" >
+<suite name="Suite1" verbose="1">
+    <test name="All">
         <packages>
             <package name="online.addressbook.tests.contact"/>
             <package name="online.addressbook.tests.group"/>

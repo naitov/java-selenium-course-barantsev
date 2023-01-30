@@ -11,6 +11,7 @@ import java.util.Objects;
 @XStreamAlias("contact")
 @Getter
 public final class ContactData {
+    @XStreamOmitField
     private int id;
     @Expose
     private String firstName;
@@ -20,7 +21,6 @@ public final class ContactData {
     @XStreamOmitField
     private String group = "test33";
     private String homePhone;
-    @Expose
     private String mobilePhone;
     private String workPhone;
     private String email;

@@ -1,22 +1,10 @@
 [
   {
     "firstName": "testName0",
-    "lastName": "testSurname0",
-    "mobilePhone": "423494369"
+    "lastName": "testSurname0"
   },
   {
     "firstName": "testName1",
-    "lastName": "testSurname1",
-    "mobilePhone": "458157675"
-  },
-  {
-    "firstName": "testName2",
-    "lastName": "testSurname2",
-    "mobilePhone": "905833982"
-  },
-  {
-    "firstName": "testName3",
-    "lastName": "testSurname3",
-    "mobilePhone": "995226952"
+    "lastName": "testSurname1"
   }
 ]

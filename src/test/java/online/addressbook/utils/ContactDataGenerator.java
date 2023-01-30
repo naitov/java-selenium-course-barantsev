@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Slf4j
 public class ContactDataGenerator {
@@ -73,18 +72,12 @@ public class ContactDataGenerator {
         List<ContactData> contacts = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             contacts.add(new ContactData().withFirstName(String.format("testName%s", i))
-                    .withLastName(String.format("testSurname%s", i))
-                    .withMobilePhone(random()));
+                    .withLastName(String.format("testSurname%s", i)));
         }
         return contacts;
     }
 
     private void logSuccess(String path) {
         log.info(String.format("Generated %s contacts in %s", count, path));
-    }
-
-    private String random() {
-        Random r = new Random();
-        return String.valueOf(r.nextInt(100000000, 999999999));
     }
 }

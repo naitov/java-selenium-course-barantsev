@@ -3,12 +3,14 @@ package online.addressbook.model;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.util.Objects;
 
 @XStreamAlias("group")
 @ToString
+@Getter
 public final class GroupData {
     @Expose
     private String name;
@@ -19,22 +21,6 @@ public final class GroupData {
 
     @XStreamOmitField
     private int id = 0;
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getHeader() {
-        return header;
-    }
-
-    public String getFooter() {
-        return footer;
-    }
 
     public GroupData withId(int id) {
         this.id = id;
