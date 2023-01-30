@@ -56,14 +56,17 @@ public class GroupCreationTests extends TestBase {
     }
 
     @Test(dataProvider = "validGroupsFromJson")
-    public void testGroupCreation(GroupData g) {
+    public void testGroupCreation(GroupData provided) {
         app.goTo().groupPage();
         Groups before = app.group().all();
-        GroupData group = new GroupData().withName(g.getName()).withHeader(g.getHeader()).withFooter(g.getFooter());
+        GroupData group = new GroupData().withName(provided.getName())
+                .withHeader(provided.getHeader())
+                .withFooter(provided.getFooter());
         app.group().create(group);
         assertThat(app.group().amount(), equalTo(before.size() + 1));
         Groups after = app.group().all();
-        assertThat(after, equalTo(before.withAdded(group.withId(after.stream().mapToInt(GroupData::getId).max().getAsInt()))));
+        assertThat(after, equalTo(before.withAdded(group.withId(after.stream()
+                .mapToInt(GroupData::getId).max().getAsInt()))));
         log.info("Created one group, other groups are unchanged");
     }
 
@@ -76,6 +79,6 @@ public class GroupCreationTests extends TestBase {
         assertThat(app.group().amount(), equalTo(before.size()));
         Groups after = app.group().all();
         assertThat(after, equalTo(before));
-        log.info("Created one group, other groups are unchanged");
+        log.info("Couldn't create a group with forbidden symbols");
     }
 }

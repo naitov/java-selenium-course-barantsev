@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoughtworks.xstream.XStream;
 import lombok.extern.slf4j.Slf4j;
-import online.addressbook.model.GroupData;
+import online.addressbook.model.ContactData;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,14 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class GroupDataGenerator {
+public class ContactDataGenerator {
     @Parameter(names = "-c", description = "Amount of groups to create, i.e. \"-c 10\"")
     public int count;
     @Parameter(names = "-f", description = "File format, xml or json, i.e. \"-f json\"")
     public String format;
+    public String file;
 
     public static void main(String[] args) throws IOException {
-        GroupDataGenerator generator = new GroupDataGenerator();
+        ContactDataGenerator generator = new ContactDataGenerator();
         JCommander jc = new JCommander(generator);
         try {
             jc.parse(args);
@@ -35,49 +36,48 @@ public class GroupDataGenerator {
     }
 
     private void run() throws IOException {
-        List<GroupData> groups = generateGroups(count);
-        String file = String.format("src/test/resources/groups.%s", format);
+        List<ContactData> contacts = generateContacts(count);
+        file = String.format("src/test/resources/contacts.%s", format);
         switch (format) {
             case "xml" -> {
-                saveAsXml(groups, new File(file));
+                saveAsXml(contacts, new File(file));
                 logSuccess(file);
             }
             case "json" -> {
-                saveAsJson(groups, new File(file));
+                saveAsJson(contacts, new File(file));
                 logSuccess(file);
             }
             default -> log.warn("Unrecognized format: " + format);
         }
     }
 
-    private void saveAsJson(List<GroupData> groups, File file) throws IOException {
+    private void saveAsJson(List<ContactData> contacts, File file) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
-        String json = gson.toJson(groups);
+        String json = gson.toJson(contacts);
         try (Writer writer = new FileWriter(file)) {
             writer.write(json);
         }
     }
 
-    private void saveAsXml(List<GroupData> groups, File file) throws IOException {
+    private void saveAsXml(List<ContactData> contacts, File file) throws IOException {
         XStream xStream = new XStream();
-        xStream.processAnnotations(GroupData.class);
-        String xml = xStream.toXML(groups);
+        xStream.processAnnotations(ContactData.class);
+        String xml = xStream.toXML(contacts);
         try (Writer writer = new FileWriter(file)) {
             writer.write(xml);
         }
     }
 
-    private List<GroupData> generateGroups(int count) {
-        List<GroupData> groups = new ArrayList<>();
+    private List<ContactData> generateContacts(int count) {
+        List<ContactData> contacts = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            groups.add(new GroupData().withName(String.format("test%s", i))
-                    .withHeader(String.format("header%s", i))
-                    .withFooter(String.format("footer%s", i)));
+            contacts.add(new ContactData().withFirstName(String.format("testName%s", i))
+                    .withLastName(String.format("testSurname%s", i)));
         }
-        return groups;
+        return contacts;
     }
 
     private void logSuccess(String path) {
-        log.info(String.format("Generated %s groups in %s", count, path));
+        log.info(String.format("Generated %s contacts in %s", count, path));
     }
 }
